@@ -1,7 +1,8 @@
 import utils.aoc_utils as aoc_utils
-from utils import split_string_by_block
+from utils import split_string_by_block, check_time
 
 
+@check_time
 def part_1(input_: list[str]) -> int:
     res = 0
     for id_range in input_[0].split(","):
@@ -17,6 +18,7 @@ def part_1(input_: list[str]) -> int:
     return res
 
 
+@check_time
 def part_2(input_: list[str]) -> int:
     res = 0
     for id_range in input_[0].split(","):
