@@ -1,13 +1,15 @@
-from functools import reduce
-from operator import mul
-
 import utils.aoc_utils as aoc_utils
 from utils import check_time
 
 
 OPERATIONS_MAP = {
-    "+": lambda x: sum(x),
-    "*": lambda x: reduce(mul, x),
+    "+": lambda x, y: x + y,
+    "*": lambda x, y: x * y,
+}
+
+DEFAULT_OPERATION_VAL = {
+    "+": 0,
+    "*": 1,
 }
 
 
@@ -24,7 +26,7 @@ def part_1(input_: list[str]) -> int:
             res_list = list(map(int, numbers))
         else:
             for j, x in enumerate(map(int, numbers)):
-                res_list[j] = OPERATIONS_MAP[operations[j]]((res_list[j], x))
+                res_list[j] = OPERATIONS_MAP[operations[j]](res_list[j], x)
 
     res = sum(res_list)
     return res
@@ -33,6 +35,24 @@ def part_1(input_: list[str]) -> int:
 @check_time
 def part_2(input_: list[str]) -> int:
     res = 0
+
+    operations = input_[-1]
+    numbers_l = input_[:-1]
+
+    operation_res = 0
+
+    for i, char in enumerate(operations):
+        if char != " ":
+            res += operation_res
+            operation = OPERATIONS_MAP[char]
+            operation_res = DEFAULT_OPERATION_VAL[char]
+
+        operation_input = "".join(line[i] for line in numbers_l).strip()
+        if operation_input != "":
+            operation_res = operation(operation_res, int(operation_input))
+
+    res += operation_res
+
     return res
 
 
